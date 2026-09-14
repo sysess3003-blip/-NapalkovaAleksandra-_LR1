@@ -1,0 +1,115 @@
+﻿<Window x:Class="PinkWpfCalculator.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="🌸 Pink Calc" Height="480" Width="320"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#FFF0F5">
+
+    <Window.Resources>
+        <Style x:Key="BaseBtn" TargetType="Button">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NumBtn" TargetType="Button" BasedOn="{StaticResource BaseBtn}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#C71585"/>
+        </Style>
+
+        <Style x:Key="OpBtn" TargetType="Button" BasedOn="{StaticResource BaseBtn}">
+            <Setter Property="Background" Value="#FFB6C1"/>
+            <Setter Property="Foreground" Value="#8B008B"/>
+        </Style>
+
+        <Style x:Key="SpecialBtn" TargetType="Button" BasedOn="{StaticResource BaseBtn}">
+            <Setter Property="Background" Value="#FFC0CB"/>
+            <Setter Property="Foreground" Value="#B22222"/>
+        </Style>
+
+        <Style x:Key="EqualsBtn" TargetType="Button" BasedOn="{StaticResource BaseBtn}">
+            <Setter Property="Background" Value="#FF69B4"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Дисплей калькулятора, привязанный к DisplayText во ViewModel -->
+        <Border Grid.Row="0" Background="White" CornerRadius="12" Margin="3,3,3,12" BorderBrush="#FFB6C1" BorderThickness="1">
+            <TextBlock Text="{Binding DisplayText}" Foreground="#C71585" 
+                       FontSize="32" FontWeight="Bold" VerticalAlignment="Center" 
+                       HorizontalAlignment="Right" Margin="15,0"/>
+        </Border>
+
+        <!-- Сетка кнопок -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Ряд 1 -->
+            <Button Content="C" Style="{StaticResource SpecialBtn}" Grid.Row="0" Grid.Column="0" Command="{Binding ClearCommand}"/>
+            <Button Content="←" Style="{StaticResource SpecialBtn}" Grid.Row="0" Grid.Column="1" Command="{Binding BackspaceCommand}"/>
+            <Button Content="%" Style="{StaticResource OpBtn}" Grid.Row="0" Grid.Column="2" Command="{Binding OpCommand}" CommandParameter="%"/>
+            <Button Content="/" Style="{StaticResource OpBtn}" Grid.Row="0" Grid.Column="3" Command="{Binding OpCommand}" CommandParameter="/"/>
+
+            <!-- Ряд 2 -->
+            <Button Content="7" Style="{StaticResource NumBtn}" Grid.Row="1" Grid.Column="0" Command="{Binding NumCommand}" CommandParameter="7"/>
+            <Button Content="8" Style="{StaticResource NumBtn}" Grid.Row="1" Grid.Column="1" Command="{Binding NumCommand}" CommandParameter="8"/>
+            <Button Content="9" Style="{StaticResource NumBtn}" Grid.Row="1" Grid.Column="2" Command="{Binding NumCommand}" CommandParameter="9"/>
+            <Button Content="*" Style="{StaticResource OpBtn}" Grid.Row="1" Grid.Column="3" Command="{Binding OpCommand}" CommandParameter="*"/>
+
+            <!-- Ряд 3 -->
+            <Button Content="4" Style="{StaticResource NumBtn}" Grid.Row="2" Grid.Column="0" Command="{Binding NumCommand}" CommandParameter="4"/>
+            <Button Content="5" Style="{StaticResource NumBtn}" Grid.Row="2" Grid.Column="1" Command="{Binding NumCommand}" CommandParameter="5"/>
+            <Button Content="6" Style="{StaticResource NumBtn}" Grid.Row="2" Grid.Column="2" Command="{Binding NumCommand}" CommandParameter="6"/>
+            <Button Content="-" Style="{StaticResource OpBtn}" Grid.Row="2" Grid.Column="3" Command="{Binding OpCommand}" CommandParameter="-"/>
+
+            <!-- Ряд 4 -->
+            <Button Content="1" Style="{StaticResource NumBtn}" Grid.Row="3" Grid.Column="0" Command="{Binding NumCommand}" CommandParameter="1"/>
+            <Button Content="2" Style="{StaticResource NumBtn}" Grid.Row="3" Grid.Column="1" Command="{Binding NumCommand}" CommandParameter="2"/>
+            <Button Content="3" Style="{StaticResource NumBtn}" Grid.Row="3" Grid.Column="2" Command="{Binding NumCommand}" CommandParameter="3"/>
+            <Button Content="+" Style="{StaticResource OpBtn}" Grid.Row="3" Grid.Column="3" Command="{Binding OpCommand}" CommandParameter="+"/>
+
+            <!-- Ряд 5 -->
+            <Button Content="±" Style="{StaticResource NumBtn}" Grid.Row="4" Grid.Column="0" Command="{Binding PlusMinusCommand}"/>
+            <Button Content="0" Style="{StaticResource NumBtn}" Grid.Row="4" Grid.Column="1" Command="{Binding NumCommand}" CommandParameter="0"/>
+            <Button Content="," Style="{StaticResource NumBtn}" Grid.Row="4" Grid.Column="2" Command="{Binding CommaCommand}"/>
+            <Button Content="=" Style="{StaticResource EqualsBtn}" Grid.Row="4" Grid.Column="3" Command="{Binding EqualsCommand}"/>
+        </Grid>
+    </Grid>
+</Window>
